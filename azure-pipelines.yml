@@ -6,9 +6,7 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
-
+pool: Azure pipelines
 steps:
 - task: NodeTool@0
   inputs:
