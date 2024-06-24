@@ -6,7 +6,8 @@
 trigger:
 - main
 
-pool: Azure pipelines
+pool: Default
+
 steps:
 - task: NodeTool@0
   inputs:
