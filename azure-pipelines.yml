@@ -3,50 +3,32 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-trigger:
+trigger:  
 - main
 
-pool: Azure Pipelines
+stages: 
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '20.x'
-  displayName: 'Install Node.js'
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: Npm@1
+      inputs:
+        command: 'install'   
 
-
-- task: Npm@1
-  displayName: "Installing modules in frontend"
-  inputs:
-    command: 'install'
-    workingDir: 'frontend'
-- task: Npm@1
-  displayName: "Installing modules in backend"
-  inputs:
-    command: 'install'
-    workingDir: 'backend'
-
-- task: Npm@1
-  displayName: "Building the frontend!"
-  inputs:
-    command: 'custom'
-    workingDir: 'frontend'
-    customCommand: 'run build'
-
-- task: CopyFiles@2
-  inputs:
-    Contents: |
-      frontend/build/**
-      backend/**
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
-stages:
+    - task: Npm@1
+      inputs:
+        command: 'custom'
+        customCommand: 'run build'
+    
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: 'build'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+    
 
 - stage: Deploy
   jobs: 
@@ -61,16 +43,13 @@ stages:
         downloadType: 'single'
         artifactName: 'drop'
         downloadPath: '$(System.ArtifactsDirectory)'
+        
     - task: AzureRmWebAppDeployment@4
-
       inputs:
         ConnectionType: 'AzureRM'
-        azureSubscription: 'Azure for Students (2ea47763-a202-468c-b00b-d986f6bafb35)'
+        azureSubscription: 'Azure for Students(2ea47763-a202-468c-b00b-d986f6bafb35)'
         appType: 'webAppLinux'
-        WebAppName: 'YoutubeCloneDevops'
-        packageForLinux: '$(System.ArtifactsDirectory)/drop'
+        WebAppName: 'azuretestdevopsk'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/drop'
         RuntimeStack: 'STATICSITE|1.0'
-       
-
-
-
+    
