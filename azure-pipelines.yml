@@ -32,9 +32,9 @@ stages:
   jobs: 
   - job: Deploy
     pool: 
-      vmImage: 'ubuntu-latest'
+      vmImage: 'ubuntu-latest'  
     
-    steps:
+    steps:    
     - task: DownloadBuildArtifacts@1
       inputs:
         buildType: 'current'
