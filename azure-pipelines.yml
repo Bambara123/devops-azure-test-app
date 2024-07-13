@@ -69,13 +69,17 @@ stages:
       inputs:
         targetType: 'inline'
         script: 'ls $(System.ArtifactsDirectory)'
+    
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: 'ls $(System.ArtifactsDirectory)/frontend'
       
-
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
         azureSubscription: 'Azure for Students(2ea47763-a202-468c-b00b-d986f6bafb35)'
         appType: 'webAppLinux'
         WebAppName: 'azuretestdevopsk'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/build'
+        packageForLinux: '$(System.ArtifactsDirectory)/drop/frontend/build'
         RuntimeStack: 'STATICSITE|1.0'
