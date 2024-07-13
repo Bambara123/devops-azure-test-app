@@ -61,5 +61,5 @@ stages:
         azureSubscription: 'Azure for Students(2ea47763-a202-468c-b00b-d986f6bafb35)'
         appType: 'webAppLinux'
         WebAppName: 'azuretestdevopsk'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/drop/frontend/build/**'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**'
         RuntimeStack: 'STATICSITE|1.0'
