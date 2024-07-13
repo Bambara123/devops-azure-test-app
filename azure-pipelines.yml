@@ -52,9 +52,13 @@ stages:
         buildType: 'current'
         downloadType: 'single'
         artifactName: 'drop'
-        itemPattern: 'drop/frontend/build'
+        itemPattern: 'drop/frontend/build/**'
         downloadPath: '$(System.ArtifactsDirectory)'
-        
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: 'ls'
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
