@@ -20,34 +20,40 @@ stages:
         workingDir: 'frontend'
         customCommand: 'run build'
 
+    # - task: PublishBuildArtifacts@1
+    #   inputs:
+    #     PathtoPublish: 'build'
+    #     ArtifactName: 'drop'
+    #     publishLocation: 'Container'
+    
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: 'build'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
             
 
 
-- stage: Deploy
-  jobs: 
-  - job: Deploy
-    pool: 
-      vmImage: 'ubuntu-latest'  
+# - stage: Deploy
+#   jobs: 
+#   - job: Deploy
+#     pool: 
+#       vmImage: 'ubuntu-latest'  
     
-    steps:    
-    - task: DownloadBuildArtifacts@1
-      inputs:
-        buildType: 'current'
-        downloadType: 'single'
-        artifactName: 'drop'
-        downloadPath: '$(System.ArtifactsDirectory)'
+#     steps:    
+#     - task: DownloadBuildArtifacts@1
+#       inputs:
+#         buildType: 'current'
+#         downloadType: 'single'
+#         artifactName: 'drop'
+#         downloadPath: '$(System.ArtifactsDirectory)'
         
-    - task: AzureRmWebAppDeployment@4
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'Azure for Students(2ea47763-a202-468c-b00b-d986f6bafb35)'
-        appType: 'webAppLinux'
-        WebAppName: 'azuretestdevopsk'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/drop'
-        RuntimeStack: 'STATICSITE|1.0'
+#     - task: AzureRmWebAppDeployment@4
+#       inputs:
+#         ConnectionType: 'AzureRM'
+#         azureSubscription: 'Azure for Students(2ea47763-a202-468c-b00b-d986f6bafb35)'
+#         appType: 'webAppLinux'
+#         WebAppName: 'azuretestdevopsk'
+#         packageForLinux: '$(System.DefaultWorkingDirectory)/drop'
+#         RuntimeStack: 'STATICSITE|1.0'
     
